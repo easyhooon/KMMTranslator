@@ -123,6 +123,7 @@ class TranslateViewModel(
                 ) }
             }
             TranslateEvent.Translate -> translate(state.value)
+
             else -> Unit
         }
     }
