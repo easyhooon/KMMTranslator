@@ -1,4 +1,4 @@
-package com.kenshi.kmmtranslator.android.presentation
+package com.kenshi.kmmtranslator.android.translate.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
