@@ -1,5 +1,6 @@
 package com.kenshi.kmmtranslator.android.translate.presentation
 
+import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -17,8 +18,10 @@ import androidx.compose.ui.unit.dp
 import com.kenshi.kmmtranslator.android.translate.presentation.components.LanguageDropDown
 import com.kenshi.kmmtranslator.android.translate.presentation.components.SwapLanguagesButton
 import com.kenshi.kmmtranslator.android.translate.presentation.components.TranslateTextField
+import com.kenshi.kmmtranslator.android.translate.presentation.components.rememberTextToSpeech
 import com.kenshi.kmmtranslator.translate.presentation.TranslateEvent
 import com.kenshi.kmmtranslator.translate.presentation.TranslateState
+import java.util.*
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -83,6 +86,7 @@ fun TranslateScreen(
             item {
                 val clipboardManager = LocalClipboardManager.current
                 val keyboardController = LocalSoftwareKeyboardController.current
+                val tts = rememberTextToSpeech()
                 TranslateTextField(
                     fromText = state.fromText,
                     toText = state.toText,
@@ -113,8 +117,15 @@ fun TranslateScreen(
                     onCloseClick = {
                         onEvent(TranslateEvent.CloseTranslation)
                     },
+                    // TODO 마지막 파라미터를 붙혀주니 speak 의 deprecated 표시가 사라짐
                     onSpeakerClick = {
-
+                        tts.language = state.toLanguage.toLocale() ?: Locale.ENGLISH
+                        tts.speak(
+                            state.toText,
+                            TextToSpeech.QUEUE_FLUSH,
+                            null,
+                            null
+                        )
                     },
                     onTextFieldClick = {
                         onEvent(TranslateEvent.EditTranslation)
