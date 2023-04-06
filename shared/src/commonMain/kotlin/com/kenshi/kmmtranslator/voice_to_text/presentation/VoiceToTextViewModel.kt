@@ -21,7 +21,7 @@ class VoiceToTextViewModel(
             recordError = if (state.canRecord) {
                 voiceResult.error
             } else {
-                   "Can't record without permission"
+                "Can't record without permission"
             },
             displayState = when {
                 !state.canRecord || voiceResult.error != null -> DisplayState.ERROR
@@ -60,12 +60,13 @@ class VoiceToTextViewModel(
                 parser.reset()
                 _state.update { VoiceToTextState() }
             }
-            is VoiceToTextEvent.ToggleRecording -> toggleListening(event.languageCode)
+            is VoiceToTextEvent.ToggleRecording -> toggleRecording(event.languageCode)
             else -> Unit
         }
     }
 
-    private fun toggleListening(languageCode: String) {
+    private fun toggleRecording(languageCode: String) {
+        _state.update { it.copy(powerRatios = emptyList()) }
         parser.cancel()
         if (state.value.displayState == DisplayState.SPEAKING) {
             parser.stopListening()

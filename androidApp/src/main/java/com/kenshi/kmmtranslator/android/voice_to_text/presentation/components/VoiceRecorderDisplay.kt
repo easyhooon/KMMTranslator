@@ -1,4 +1,4 @@
-package com.kenshi.kmmtranslator.android.voice_to_text.presentation
+package com.kenshi.kmmtranslator.android.voice_to_text.presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
