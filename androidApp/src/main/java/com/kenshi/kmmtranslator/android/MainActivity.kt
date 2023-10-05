@@ -3,7 +3,6 @@ package com.kenshi.kmmtranslator.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -23,13 +21,11 @@ import com.kenshi.kmmtranslator.android.core.presentation.Routes
 import com.kenshi.kmmtranslator.android.translate.presentation.AndroidTranslateViewModel
 import com.kenshi.kmmtranslator.android.translate.presentation.TranslateScreen
 import com.kenshi.kmmtranslator.android.voice_to_text.presentation.AndroidVoiceToTextViewModel
+import com.kenshi.kmmtranslator.android.voice_to_text.presentation.VoiceToTextScreen
 import com.kenshi.kmmtranslator.translate.presentation.TranslateEvent
 import com.kenshi.kmmtranslator.voice_to_text.presentation.VoiceToTextEvent
-import com.kenshi.kmmtranslator.android.voice_to_text.presentation.VoiceToTextScreen
 import dagger.hilt.android.AndroidEntryPoint
 
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +43,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@ExperimentalAnimationApi
-@ExperimentalComposeUiApi
 @Composable
 fun TranslateRoot() {
     val navController = rememberNavController()
@@ -56,11 +50,11 @@ fun TranslateRoot() {
         navController = navController,
         startDestination = Routes.TRANSLATE
     ) {
-        composable(route = Routes.TRANSLATE) {
+        composable(route = Routes.TRANSLATE) { navBackStackEntry ->
             val viewModel = hiltViewModel<AndroidTranslateViewModel>()
             val state by viewModel.state.collectAsState()
 
-            val voiceResult by it
+            val voiceResult by navBackStackEntry
                 .savedStateHandle
                 .getStateFlow<String?>("voiceResult", null)
                 .collectAsState()
@@ -68,10 +62,10 @@ fun TranslateRoot() {
             LaunchedEffect(voiceResult) {
                 viewModel.onEvent(TranslateEvent.SubmitVoiceResult(voiceResult))
                 // clear
-                it.savedStateHandle["voiceResult"] = null
+                navBackStackEntry.savedStateHandle["voiceResult"] = null
             }
 
-            //TODO 필요한 속성들만 viewModel 에서 꺼내 Screen 으로 넘겨라에 의미
+            //필요한 속성들만 viewModel 에서 꺼내 Screen 으로 넘기는 것을 지향
             TranslateScreen(
                 state = state,
                 onEvent = { event ->
@@ -94,8 +88,8 @@ fun TranslateRoot() {
                     defaultValue = "en"
                 }
             )
-        ) {backStackEntry ->
-            val languageCode = backStackEntry.arguments?.getString("languageCode") ?: "en"
+        ) { navBackStackEntry ->
+            val languageCode = navBackStackEntry.arguments?.getString("languageCode") ?: "en"
             val viewModel = hiltViewModel<AndroidVoiceToTextViewModel>()
             val state by viewModel.state.collectAsState()
 
@@ -103,7 +97,7 @@ fun TranslateRoot() {
                 state = state,
                 languageCode = languageCode,
                 onResult = { spokenText ->
-                    //TODO navigation 을 이용한 onActivityResult 와 같은 방법
+                    // navigation 을 이용한 onActivityResult 와 같은 방법
                     navController.previousBackStackEntry?.savedStateHandle?.set(
                         "voiceResult", spokenText
                     )
@@ -118,7 +112,6 @@ fun TranslateRoot() {
                     }
                 }
             )
-
         }
     }
 }

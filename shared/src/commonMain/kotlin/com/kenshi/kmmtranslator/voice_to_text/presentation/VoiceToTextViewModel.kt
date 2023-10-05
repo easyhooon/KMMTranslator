@@ -28,6 +28,7 @@ class VoiceToTextViewModel(
                 voiceResult.result.isNotBlank() && !voiceResult.isSpeaking -> {
                     DisplayState.DISPLAYING_RESULTS
                 }
+
                 voiceResult.isSpeaking -> DisplayState.SPEAKING
                 else -> DisplayState.WAITING_TO_TALK
             }
@@ -56,10 +57,12 @@ class VoiceToTextViewModel(
             is VoiceToTextEvent.PermissionResult -> {
                 _state.update { it.copy(canRecord = event.isGranted) }
             }
+
             VoiceToTextEvent.Reset -> {
                 parser.reset()
                 _state.update { VoiceToTextState() }
             }
+
             is VoiceToTextEvent.ToggleRecording -> toggleRecording(event.languageCode)
             else -> Unit
         }

@@ -5,13 +5,13 @@ import com.kenshi.kmmtranslator.R
 import com.kenshi.kmmtranslator.core.domain.language.Language
 import java.util.*
 
-actual class UiLanguage(
+actual data class UiLanguage(
     @DrawableRes val drawableRes: Int,
     actual val language: Language
 ) {
 
     fun toLocale(): Locale? {
-        return when(language) {
+        return when (language) {
             Language.ENGLISH -> Locale.ENGLISH
             Language.CHINESE -> Locale.CHINESE
             Language.FRENCH -> Locale.FRENCH
@@ -22,6 +22,7 @@ actual class UiLanguage(
             else -> null
         }
     }
+
     actual companion object {
         actual fun byCode(langCode: String): UiLanguage {
             return allLanguages.find { it.language.langCode == langCode }
@@ -32,7 +33,7 @@ actual class UiLanguage(
             get() = Language.values().map { language ->
                 UiLanguage(
                     language = language,
-                    drawableRes = when(language) {
+                    drawableRes = when (language) {
                         Language.ENGLISH -> R.drawable.english
                         Language.ARABIC -> R.drawable.arabic
                         Language.AZERBAIJANI -> R.drawable.azerbaijani

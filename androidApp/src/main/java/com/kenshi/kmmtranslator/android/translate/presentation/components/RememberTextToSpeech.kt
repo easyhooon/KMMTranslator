@@ -6,6 +6,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 
+// 컴포저블 함수도 함수이므로 리턴값을 가질 수 있다!
 @Composable
 fun rememberTextToSpeech(): TextToSpeech {
     val context = LocalContext.current

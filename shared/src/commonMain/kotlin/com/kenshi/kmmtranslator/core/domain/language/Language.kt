@@ -36,7 +36,7 @@ enum class Language(
 
     companion object {
         fun byCode(code: String): Language {
-            //TODO 문법 관련 학습
+            //values -> enum 의 내장 메서드, 모든 enum 의 상수를 배열로 반환함
             return values().find { it.langCode == code }
                 ?: throw IllegalArgumentException("Invalid or unsupported language code")
         }

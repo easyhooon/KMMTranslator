@@ -28,7 +28,6 @@ class Translate(
                 )
             )
             Resource.Success(translatedText)
-
         } catch (e: TranslateException) {
             e.printStackTrace()
             Resource.Error(e)

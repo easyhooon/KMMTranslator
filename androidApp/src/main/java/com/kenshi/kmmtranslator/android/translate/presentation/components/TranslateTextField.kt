@@ -1,3 +1,4 @@
+@file:OptIn(ExperimentalAnimationApi::class)
 package com.kenshi.kmmtranslator.android.translate.presentation.components
 
 import androidx.compose.animation.AnimatedContent
@@ -25,7 +26,6 @@ import com.kenshi.kmmtranslator.android.R
 import com.kenshi.kmmtranslator.android.core.theme.LightBlue
 import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
-@ExperimentalAnimationApi
 @Composable
 fun TranslateTextField(
     fromText: String,

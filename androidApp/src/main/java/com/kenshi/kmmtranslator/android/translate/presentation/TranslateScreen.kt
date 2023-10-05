@@ -1,8 +1,9 @@
+@file:OptIn(ExperimentalComposeUiApi::class)
+
 package com.kenshi.kmmtranslator.android.translate.presentation
 
 import android.speech.tts.TextToSpeech
 import android.widget.Toast
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,8 +28,6 @@ import com.kenshi.kmmtranslator.translate.presentation.TranslateEvent
 import com.kenshi.kmmtranslator.translate.presentation.TranslateState
 import java.util.*
 
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
 @Composable
 fun TranslateScreen(
     state: TranslateState,
@@ -39,13 +38,13 @@ fun TranslateScreen(
     LaunchedEffect(key1 = state.error) {
         val message = when (state.error) {
             TranslateError.SERVICE_UNAVAILABLE ->
-                context.getString(com.kenshi.kmmtranslator.android.R.string.error_service_unavailable)
+                context.getString(R.string.error_service_unavailable)
             TranslateError.CLIENT_ERROR ->
-                context.getString(com.kenshi.kmmtranslator.android.R.string.client_error)
+                context.getString(R.string.client_error)
             TranslateError.SERVER_ERROR ->
-                context.getString(com.kenshi.kmmtranslator.android.R.string.server_error)
+                context.getString(R.string.server_error)
             TranslateError.UNKNOWN_ERROR ->
-                context.getString(com.kenshi.kmmtranslator.android.R.string.unknown_error)
+                context.getString(R.string.unknown_error)
             else -> null
         }
 
@@ -146,7 +145,7 @@ fun TranslateScreen(
                         Toast.makeText(
                             context,
                             context.getString(
-                                com.kenshi.kmmtranslator.android.R.string.copied_to_clipboard
+                                R.string.copied_to_clipboard
                             ),
                             Toast.LENGTH_LONG
                         ).show()
@@ -154,7 +153,6 @@ fun TranslateScreen(
                     onCloseClick = {
                         onEvent(TranslateEvent.CloseTranslation)
                     },
-                    // TODO 마지막 파라미터를 붙혀주니 speak 의 deprecated 표시가 사라짐
                     onSpeakerClick = {
                         tts.language = state.toLanguage.toLocale() ?: Locale.ENGLISH
                         tts.speak(

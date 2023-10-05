@@ -77,7 +77,7 @@ fun VoiceRecorderDisplay(
 fun VoiceRecorderDisplayPreview() {
     TranslatorTheme {
         VoiceRecorderDisplay(
-            powerRatios = (0..50).map {
+            powerRatios = (0..100).map {
 //                val percent = it / 100f
 //                sin(percent * 2 * PI).toFloat()
                 Random.nextFloat()

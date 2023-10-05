@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.kenshi.kmmtranslator.android.translate.presentation.components
 
 import androidx.compose.animation.AnimatedContent
@@ -17,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
-@ExperimentalAnimationApi
 @Composable
 fun ProgressButton(
     text: String,
