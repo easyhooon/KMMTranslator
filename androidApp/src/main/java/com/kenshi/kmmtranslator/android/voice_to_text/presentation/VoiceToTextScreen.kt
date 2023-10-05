@@ -119,7 +119,7 @@ fun VoiceToTextScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                // TODO paddingValues 핸들링 하는 방법
+                // paddingValues 핸들링 하는 방법
                 .padding(padding)
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -145,7 +145,7 @@ fun VoiceToTextScreen(
                     .padding(16.dp)
                     .padding(bottom = 100.dp)
                     .weight(1f)
-                    // 이걸 달아줘야 스크롤 가능
+                    // verticalScroll modifier 를 추가해줘야 스크롤 가능
                     .verticalScroll(rememberScrollState())
             ) {
                 AnimatedContent(targetState = state.displayState) { displayState ->
