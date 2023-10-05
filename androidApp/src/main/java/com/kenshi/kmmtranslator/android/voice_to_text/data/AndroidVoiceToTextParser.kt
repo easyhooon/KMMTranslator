@@ -15,6 +15,7 @@ import com.plcoding.translator_kmm.voice_to_text.domain.VoiceToTextParserState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
+// voice to text 를 구현 하는 방법
 class AndroidVoiceToTextParser(
     private val app: Application
 ) : VoiceToTextParser, RecognitionListener {
