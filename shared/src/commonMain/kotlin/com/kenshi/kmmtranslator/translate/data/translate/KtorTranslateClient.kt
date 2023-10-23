@@ -19,7 +19,7 @@ class KtorTranslateClient(
     override suspend fun translate(
         fromLanguage: Language,
         fromText: String,
-        toLanguage: Language
+        toLanguage: Language,
     ): String {
         val result = try {
             httpClient.post {
@@ -39,8 +39,11 @@ class KtorTranslateClient(
 
         when(result.status.value) {
             in 200..299 -> Unit
+
             500 -> throw TranslateException(TranslateError.SERVER_ERROR)
+
             in 400..499 -> throw TranslateException(TranslateError.CLIENT_ERROR)
+
             else -> throw TranslateException(TranslateError.UNKNOWN_ERROR)
         }
 

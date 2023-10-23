@@ -6,7 +6,8 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
 actual class DatabaseDriverFactory(
-    private val context: Context
+    // android 에서는 context 가 존재하지만 iOS 에는 존재하지 않음
+    private val context: Context,
 ) {
     actual fun create(): SqlDriver {
         return AndroidSqliteDriver(TranslateDatabase.Schema, context, "translate.db")

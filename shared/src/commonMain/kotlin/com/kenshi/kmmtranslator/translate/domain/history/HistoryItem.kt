@@ -5,5 +5,5 @@ data class HistoryItem(
     val fromLanguageCode: String,
     val fromText: String,
     val toLanguageCode: String,
-    val toText: String
+    val toText: String,
 )

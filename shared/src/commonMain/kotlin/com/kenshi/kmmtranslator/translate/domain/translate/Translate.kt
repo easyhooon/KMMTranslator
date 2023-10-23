@@ -5,6 +5,7 @@ import com.kenshi.kmmtranslator.core.domain.util.Resource
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryDataSource
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryItem
 
+// UseCase
 class Translate(
     private val client: TranslateClient,
     private val historyDataSource: HistoryDataSource
@@ -12,7 +13,7 @@ class Translate(
     suspend fun execute(
         fromLanguage: Language,
         fromText: String,
-        toLanguage: Language
+        toLanguage: Language,
     ): Resource<String> {
         return try {
             val translatedText = client.translate(
