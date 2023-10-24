@@ -23,6 +23,7 @@ actual data class UiLanguage(
         }
     }
 
+    // companion object 도 expect, actual 의 형태가 가능하다
     actual companion object {
         actual fun byCode(langCode: String): UiLanguage {
             return allLanguages.find { it.language.langCode == langCode }

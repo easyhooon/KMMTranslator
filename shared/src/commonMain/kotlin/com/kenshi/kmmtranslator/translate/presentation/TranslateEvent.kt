@@ -2,6 +2,7 @@ package com.kenshi.kmmtranslator.translate.presentation
 
 import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
+// 앱에서 발생할 수 있는 모든 Translate 관련 Event 를 정의
 sealed class TranslateEvent {
     data class ChooseFromLanguage(val language: UiLanguage): TranslateEvent()
     data class ChooseToLanguage(val language: UiLanguage): TranslateEvent()

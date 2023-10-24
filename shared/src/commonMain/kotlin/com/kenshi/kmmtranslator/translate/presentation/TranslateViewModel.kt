@@ -12,10 +12,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+// Android, iOS 공유 뷰모델
+// iOS 에서는 반응형 데이터 구조로 publisher 라는것을 사용함
+// 해당 앱에서는 너무나도 많은 매핑 논리가 진행되고 있기 때문에 휴먼 에러와 같은 문제가 발생하기 쉬움
+// -> Android 와 iOS 간에 뷰모델을 공유하고 싶은 이유
+// 두 개의 개별 test suit 도 작성할 필요가 없음
 class TranslateViewModel(
+    // UseCase
     private val translate: Translate,
     historyDataSource: HistoryDataSource,
-    coroutineScope: CoroutineScope?
+    // iOS 에는 coroutineScope 라는 개념이 실제로 존재하지 않음
+    // Android 에선 coroutineScope 로 ViewModelScope 를 전달함
+    coroutineScope: CoroutineScope?,
 ) {
 
     private val viewModelScope = coroutineScope ?: CoroutineScope(Dispatchers.Main)
@@ -25,7 +33,7 @@ class TranslateViewModel(
     // val state = _state.asStateFlow().toCommonStateFlow()
     val state = combine(
         _state,
-        historyDataSource.getHistory()
+        historyDataSource.getHistory(),
     ) { state, history ->
         if (state.history != history) {
             state.copy(
@@ -35,7 +43,7 @@ class TranslateViewModel(
                         fromText = item.fromText,
                         toText = item.toText,
                         fromLanguage = UiLanguage.byCode(item.fromLanguageCode),
-                        toLanguage = UiLanguage.byCode(item.toLanguageCode)
+                        toLanguage = UiLanguage.byCode(item.toLanguageCode),
                     )
                 }
             )
@@ -48,10 +56,9 @@ class TranslateViewModel(
     fun onEvent(event: TranslateEvent) {
         when (event) {
             is TranslateEvent.ChangeTranslationText -> {
+                // race condition 방지
                 _state.update {
-                    it.copy(
-                        fromText = event.text
-                    )
+                    it.copy(fromText = event.text)
                 }
             }
 
@@ -59,7 +66,7 @@ class TranslateViewModel(
                 _state.update {
                     it.copy(
                         isChoosingFromLanguage = false,
-                        fromLanguage = event.language
+                        fromLanguage = event.language,
                     )
                 }
             }
@@ -68,7 +75,7 @@ class TranslateViewModel(
                 val newState = _state.updateAndGet {
                     it.copy(
                         isChoosingToLanguage = false,
-                        toLanguage = event.language
+                        toLanguage = event.language,
                     )
                 }
                 translate(newState)
@@ -79,7 +86,7 @@ class TranslateViewModel(
                     it.copy(
                         isTranslating = false,
                         fromText = "",
-                        toText = null
+                        toText = null,
                     )
                 }
             }
@@ -89,7 +96,7 @@ class TranslateViewModel(
                     _state.update {
                         it.copy(
                             toText = null,
-                            isTranslating = false
+                            isTranslating = false,
                         )
                     }
                 }
@@ -101,17 +108,13 @@ class TranslateViewModel(
 
             TranslateEvent.OpenFromLanguageDropDown -> {
                 _state.update {
-                    it.copy(
-                        isChoosingFromLanguage = true
-                    )
+                    it.copy(isChoosingFromLanguage = true)
                 }
             }
 
             TranslateEvent.OpenToLanguageDropDown -> {
                 _state.update {
-                    it.copy(
-                        isChoosingToLanguage = true
-                    )
+                    it.copy(isChoosingToLanguage = true)
                 }
             }
 
@@ -123,7 +126,7 @@ class TranslateViewModel(
                         toText = event.item.toText,
                         isTranslating = false,
                         fromLanguage = event.item.fromLanguage,
-                        toLanguage = event.item.toLanguage
+                        toLanguage = event.item.toLanguage,
                     )
                 }
             }
@@ -132,7 +135,7 @@ class TranslateViewModel(
                 _state.update {
                     it.copy(
                         isChoosingFromLanguage = false,
-                        isChoosingToLanguage = false
+                        isChoosingToLanguage = false,
                     )
                 }
             }
@@ -142,7 +145,7 @@ class TranslateViewModel(
                     it.copy(
                         fromText = event.result ?: it.fromText,
                         isTranslating = if (event.result != null) false else it.isTranslating,
-                        toText = if (event.result != null) null else it.toText
+                        toText = if (event.result != null) null else it.toText,
                     )
                 }
             }
@@ -153,20 +156,23 @@ class TranslateViewModel(
                         fromLanguage = it.toLanguage,
                         toLanguage = it.fromLanguage,
                         fromText = it.toText ?: "",
-                        toText = if (it.toText != null) it.fromText else null
+                        toText = if (it.toText != null) it.fromText else null,
                     )
                 }
             }
 
             TranslateEvent.Translate -> translate(state.value)
+
             else -> Unit
         }
     }
 
+    // Trigger translate UseCase
     private fun translate(state: TranslateState) {
         if (state.isTranslating || state.fromText.isBlank()) {
             return
         }
+
         translateJob = viewModelScope.launch {
             _state.update {
                 it.copy(isTranslating = true)
@@ -174,14 +180,14 @@ class TranslateViewModel(
             val result = translate.execute(
                 fromLanguage = state.fromLanguage.language,
                 fromText = state.fromText,
-                toLanguage = state.toLanguage.language
+                toLanguage = state.toLanguage.language,
             )
             when (result) {
                 is Resource.Success -> {
                     _state.update {
                         it.copy(
                             isTranslating = false,
-                            toText = result.data
+                            toText = result.data,
                         )
                     }
                 }
@@ -190,7 +196,7 @@ class TranslateViewModel(
                     _state.update {
                         it.copy(
                             isTranslating = false,
-                            error = (result.throwable as? TranslateException)?.error
+                            error = (result.throwable as? TranslateException)?.error,
                         )
                     }
                 }
