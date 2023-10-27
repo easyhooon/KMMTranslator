@@ -9,7 +9,7 @@ import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 import com.kenshi.kmmtranslator.translate.data.local.FakeHistoryDataSource
 import com.kenshi.kmmtranslator.translate.data.remote.FakeTranslateClient
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryItem
-import com.kenshi.kmmtranslator.translate.domain.translate.Translate
+import com.kenshi.kmmtranslator.translate.domain.translate.TranslateUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -26,7 +26,7 @@ class TranslateViewModelTest {
     fun setUp() {
         client = FakeTranslateClient()
         dataSource = FakeHistoryDataSource()
-        val translate = Translate(
+        val translate = TranslateUseCase(
             client = client,
             historyDataSource = dataSource
         )

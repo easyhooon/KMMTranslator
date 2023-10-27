@@ -4,7 +4,7 @@ import com.kenshi.kmmtranslator.core.domain.util.Resource
 import com.kenshi.kmmtranslator.core.domain.util.toCommonStateFlow
 import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryDataSource
-import com.kenshi.kmmtranslator.translate.domain.translate.Translate
+import com.kenshi.kmmtranslator.translate.domain.translate.TranslateUseCase
 import com.kenshi.kmmtranslator.translate.domain.translate.TranslateException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 // 두 개의 개별 test suit 도 작성할 필요가 없음
 class TranslateViewModel(
     // UseCase
-    private val translate: Translate,
+    private val translate: TranslateUseCase,
     historyDataSource: HistoryDataSource,
     // iOS 에는 coroutineScope 라는 개념이 실제로 존재하지 않음
     // Android 에선 coroutineScope 로 ViewModelScope 를 전달함
@@ -107,15 +107,11 @@ class TranslateViewModel(
             }
 
             TranslateEvent.OpenFromLanguageDropDown -> {
-                _state.update {
-                    it.copy(isChoosingFromLanguage = true)
-                }
+                _state.update { it.copy(isChoosingFromLanguage = true) }
             }
 
             TranslateEvent.OpenToLanguageDropDown -> {
-                _state.update {
-                    it.copy(isChoosingToLanguage = true)
-                }
+                _state.update { it.copy(isChoosingToLanguage = true) }
             }
 
             is TranslateEvent.SelectHistoryItem -> {
@@ -174,9 +170,7 @@ class TranslateViewModel(
         }
 
         translateJob = viewModelScope.launch {
-            _state.update {
-                it.copy(isTranslating = true)
-            }
+            _state.update { it.copy(isTranslating = true) }
             val result = translate.execute(
                 fromLanguage = state.fromLanguage.language,
                 fromText = state.fromText,

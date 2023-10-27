@@ -7,7 +7,7 @@ import com.kenshi.kmmtranslator.translate.data.local.DatabaseDriverFactory
 import com.kenshi.kmmtranslator.translate.data.remote.HttpClientFactory
 import com.kenshi.kmmtranslator.translate.data.translate.KtorTranslateClient
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryDataSource
-import com.kenshi.kmmtranslator.translate.domain.translate.Translate
+import com.kenshi.kmmtranslator.translate.domain.translate.TranslateUseCase
 import com.kenshi.kmmtranslator.translate.domain.translate.TranslateClient
 import com.squareup.sqldelight.db.SqlDriver
 import dagger.Module
@@ -51,7 +51,7 @@ object AppModule {
     fun provideTranslateUseCase(
         client: TranslateClient,
         datasource: HistoryDataSource
-    ): Translate {
-        return Translate(client, datasource)
+    ): TranslateUseCase {
+        return TranslateUseCase(client, datasource)
     }
 }

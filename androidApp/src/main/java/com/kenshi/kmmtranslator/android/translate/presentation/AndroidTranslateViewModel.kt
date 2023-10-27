@@ -3,7 +3,7 @@ package com.kenshi.kmmtranslator.android.translate.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryDataSource
-import com.kenshi.kmmtranslator.translate.domain.translate.Translate
+import com.kenshi.kmmtranslator.translate.domain.translate.TranslateUseCase
 import com.kenshi.kmmtranslator.translate.presentation.TranslateEvent
 import com.kenshi.kmmtranslator.translate.presentation.TranslateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AndroidTranslateViewModel @Inject constructor(
-    private val translate: Translate,
+    private val translate: TranslateUseCase,
     private val historyDataSource: HistoryDataSource,
 ) : ViewModel() {
 

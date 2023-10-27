@@ -6,7 +6,7 @@ import com.kenshi.kmmtranslator.translate.domain.history.HistoryDataSource
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryItem
 
 // UseCase
-class Translate(
+class TranslateUseCase(
     private val client: TranslateClient,
     private val historyDataSource: HistoryDataSource,
 ) {
