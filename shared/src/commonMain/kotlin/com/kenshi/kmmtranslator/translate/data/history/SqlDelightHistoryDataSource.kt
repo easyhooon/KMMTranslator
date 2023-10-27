@@ -34,7 +34,7 @@ class SqlDelightHistoryDataSource(
             fromText = item.fromText,
             toLanguageCode = item.toLanguageCode,
             toText = item.toText,
-            timestamp = Clock.System.now().toEpochMilliseconds()
+            timestamp = Clock.System.now().toEpochMilliseconds(),
         )
     }
 }

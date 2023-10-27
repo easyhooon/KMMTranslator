@@ -13,18 +13,18 @@ import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
 @Composable
 fun LanguageDisplay(
+    modifier: Modifier = Modifier,
     language: UiLanguage,
-    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         SmallLanguageIcon(language = language)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = language.language.langName,
-            color = LightBlue
+            color = LightBlue,
         )
     }
 }

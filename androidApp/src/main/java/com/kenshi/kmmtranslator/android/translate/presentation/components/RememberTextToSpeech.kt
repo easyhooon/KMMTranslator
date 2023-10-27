@@ -10,9 +10,8 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun rememberTextToSpeech(): TextToSpeech {
     val context = LocalContext.current
-    val tts = remember {
-        TextToSpeech(context, null)
-    }
+    val tts = remember { TextToSpeech(context, null) }
+    // 객체를 쉽게 정리 하기 위한
     DisposableEffect(key1 = tts) {
         onDispose {
             tts.stop()

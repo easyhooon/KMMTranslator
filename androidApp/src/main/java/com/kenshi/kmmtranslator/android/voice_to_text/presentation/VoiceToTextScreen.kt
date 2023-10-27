@@ -37,7 +37,7 @@ fun VoiceToTextScreen(
     state: VoiceToTextState,
     languageCode: String,
     onResult: (String) -> Unit,
-    onEvent: (VoiceToTextEvent) -> Unit
+    onEvent: (VoiceToTextEvent) -> Unit,
 ) {
     val context = LocalContext.current
     // 권한 체크
@@ -60,10 +60,9 @@ fun VoiceToTextScreen(
     Scaffold(
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 FloatingActionButton(
+                    modifier = Modifier.size(75.dp),
                     onClick = {
                         if (state.displayState != DisplayState.DISPLAYING_RESULTS) {
                             onEvent(VoiceToTextEvent.ToggleRecording(languageCode))
@@ -73,11 +72,9 @@ fun VoiceToTextScreen(
                     },
                     backgroundColor = MaterialTheme.colors.primary,
                     contentColor = MaterialTheme.colors.onPrimary,
-                    modifier = Modifier
-                        .size(75.dp)
                 ) {
-                    AnimatedContent(targetState = state.displayState) {displayState ->
-                        when(displayState) {
+                    AnimatedContent(targetState = state.displayState) { displayState ->
+                        when (displayState) {
                             DisplayState.SPEAKING -> {
                                 Icon(
                                     imageVector = Icons.Rounded.Close,
@@ -85,6 +82,7 @@ fun VoiceToTextScreen(
                                     modifier = Modifier.size(50.dp)
                                 )
                             }
+
                             DisplayState.DISPLAYING_RESULTS -> {
                                 Icon(
                                     imageVector = Icons.Rounded.Check,
@@ -92,24 +90,23 @@ fun VoiceToTextScreen(
                                     modifier = Modifier.size(50.dp)
                                 )
                             }
+
                             else -> {
                                 Icon(
+                                    modifier = Modifier.size(50.dp),
                                     imageVector = ImageVector.vectorResource(id = R.drawable.mic),
                                     contentDescription = stringResource(id = R.string.record_audio),
-                                    modifier = Modifier.size(50.dp)
                                 )
                             }
                         }
                     }
                 }
                 if (state.displayState == DisplayState.DISPLAYING_RESULTS) {
-                    IconButton(onClick = {
-                        onEvent(VoiceToTextEvent.ToggleRecording(languageCode))
-                    }) {
+                    IconButton(onClick = { onEvent(VoiceToTextEvent.ToggleRecording(languageCode)) }) {
                         Icon(
                             imageVector = Icons.Rounded.Refresh,
                             contentDescription = stringResource(id = R.string.record_again),
-                            tint = LightBlue
+                            tint = LightBlue,
                         )
                     }
                 }
@@ -123,19 +120,17 @@ fun VoiceToTextScreen(
                 .padding(padding)
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
-                IconButton(onClick = {
-                    onEvent(VoiceToTextEvent.Close)
-                }) {
+                IconButton(onClick = { onEvent(VoiceToTextEvent.Close) }) {
                     Icon(
                         imageVector = Icons.Rounded.Close,
-                        contentDescription = stringResource(id = R.string.close)
+                        contentDescription = stringResource(id = R.string.close),
                     )
                 }
                 if (state.displayState == DisplayState.SPEAKING) {
                     Text(
+                        modifier = Modifier.align(Alignment.Center),
                         text = stringResource(id = R.string.listening),
                         color = LightBlue,
-                        modifier = Modifier.align(Alignment.Center)
                     )
                 }
             }
@@ -145,42 +140,44 @@ fun VoiceToTextScreen(
                     .padding(16.dp)
                     .padding(bottom = 100.dp)
                     .weight(1f)
-                    // verticalScroll modifier 를 추가해줘야 스크롤 가능
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState()),
             ) {
                 AnimatedContent(targetState = state.displayState) { displayState ->
-                    when(displayState) {
+                    when (displayState) {
                         DisplayState.WAITING_TO_TALK -> {
                             Text(
                                 text = stringResource(id = R.string.start_talking),
                                 style = MaterialTheme.typography.h2,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
                             )
                         }
+
                         DisplayState.SPEAKING -> {
                             VoiceRecorderDisplay(
                                 powerRatios = state.powerRatios,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(100.dp)
+                                    .height(100.dp),
                             )
                         }
+
                         DisplayState.DISPLAYING_RESULTS -> {
                             Text(
                                 text = state.spokenText,
                                 style = MaterialTheme.typography.h2,
                                 textAlign = TextAlign.Center,
-
-                                )
+                            )
                         }
+
                         DisplayState.ERROR -> {
                             Text(
                                 text = state.recordError ?: "Unknown error",
                                 style = MaterialTheme.typography.h2,
                                 textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.error
+                                color = MaterialTheme.colors.error,
                             )
                         }
+
                         null -> Unit
                     }
                 }

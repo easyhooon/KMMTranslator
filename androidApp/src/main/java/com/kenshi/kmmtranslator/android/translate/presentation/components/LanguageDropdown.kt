@@ -23,12 +23,13 @@ fun LanguageDropDown(
     isOpen: Boolean,
     onClick: () -> Unit, onDismiss: () -> Unit,
     onSelectLanguage: (UiLanguage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
+        // 컴포즈에서는 리스트를 직접 만들지 않아도 드롭다운이라는 컴포넌트를 지원한다.
         DropdownMenu(
             expanded = isOpen,
-            onDismissRequest = onDismiss
+            onDismissRequest = onDismiss,
         ) {
             UiLanguage.allLanguages.forEach { language ->
                 LanguageDropDownItem(
@@ -49,7 +50,7 @@ fun LanguageDropDown(
             AsyncImage(
                 model = language.drawableRes,
                 contentDescription = language.language.langName,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
@@ -65,7 +66,7 @@ fun LanguageDropDown(
                     stringResource(id = com.kenshi.kmmtranslator.android.R.string.open)
                 },
                 tint = LightBlue,
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
             )
         }
     }

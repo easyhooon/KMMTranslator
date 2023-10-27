@@ -29,7 +29,7 @@ class KtorTranslateClient(
                     TranslateDto(
                         textToTranslate = fromText,
                         sourceLanguageCode = fromLanguage.langCode,
-                        targetLanguageCode = toLanguage.langCode
+                        targetLanguageCode = toLanguage.langCode,
                     )
                 )
             }
@@ -37,6 +37,7 @@ class KtorTranslateClient(
             throw TranslateException(TranslateError.SERVICE_UNAVAILABLE)
         }
 
+        // 에러를 누락되는 경우 없이 핸들링 하는 방법!
         when(result.status.value) {
             in 200..299 -> Unit
 

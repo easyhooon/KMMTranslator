@@ -4,5 +4,5 @@ data class VoiceToTextParserState(
     val result: String = "",
     val error: String? = null,
     val powerRatio: Float = 0f, // 0 ~ 1
-    val isSpeaking: Boolean = false
+    val isSpeaking: Boolean = false,
 )

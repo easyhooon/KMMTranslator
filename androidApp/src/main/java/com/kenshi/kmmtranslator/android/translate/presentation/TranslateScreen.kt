@@ -57,21 +57,21 @@ fun TranslateScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    onEvent(TranslateEvent.RecordAudio)
-                },
+                modifier = Modifier.size(75.dp),
+                onClick = { onEvent(TranslateEvent.RecordAudio) },
                 backgroundColor = MaterialTheme.colors.primary,
                 contentColor = MaterialTheme.colors.onPrimary,
-                modifier = Modifier.size(75.dp)
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.mic),
-                    contentDescription = stringResource(id = R.string.record_audio)
+                    contentDescription = stringResource(id = R.string.record_audio),
                 )
             }
         },
-        floatingActionButtonPosition = FabPosition.Center
+        floatingActionButtonPosition = FabPosition.Center,
     ) { padding ->
+        // 화면 내에 모든 컴포넌트를 LazyColumn 내의 Item 으로 선언
+        // 전체 스크롤이 가능하도록
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -84,46 +84,34 @@ fun TranslateScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     LanguageDropDown(
                         language = state.fromLanguage,
                         isOpen = state.isChoosingFromLanguage,
-                        onClick = {
-                            onEvent(TranslateEvent.OpenFromLanguageDropDown)
-                        },
-                        onDismiss = {
-                            onEvent(TranslateEvent.StopChoosingLanguage)
-                        },
-                        onSelectLanguage = {
-                            onEvent(TranslateEvent.ChooseFromLanguage(it))
-                        }
+                        onClick = { onEvent(TranslateEvent.OpenFromLanguageDropDown) },
+                        onDismiss = { onEvent(TranslateEvent.StopChoosingLanguage) },
+                        onSelectLanguage = { onEvent(TranslateEvent.ChooseFromLanguage(it)) }
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    SwapLanguagesButton(onClick = {
-                        onEvent(TranslateEvent.SwapLanguages)
-                    })
+                    SwapLanguagesButton(onClick = { onEvent(TranslateEvent.SwapLanguages) })
                     Spacer(modifier = Modifier.weight(1f))
                     LanguageDropDown(
                         language = state.toLanguage,
                         isOpen = state.isChoosingToLanguage,
-                        onClick = {
-                            onEvent(TranslateEvent.OpenToLanguageDropDown)
-                        },
-                        onDismiss = {
-                            onEvent(TranslateEvent.StopChoosingLanguage)
-                        },
-                        onSelectLanguage = {
-                            onEvent(TranslateEvent.ChooseToLanguage(it))
-                        }
+                        onClick = { onEvent(TranslateEvent.OpenToLanguageDropDown) },
+                        onDismiss = { onEvent(TranslateEvent.StopChoosingLanguage) },
+                        onSelectLanguage = { onEvent(TranslateEvent.ChooseToLanguage(it)) }
                     )
                 }
             }
             item {
+                // Compose 에서 텍스트를 복사하는 방법!
                 val clipboardManager = LocalClipboardManager.current
                 val keyboardController = LocalSoftwareKeyboardController.current
                 val tts = rememberTextToSpeech()
                 TranslateTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     fromText = state.fromText,
                     toText = state.toText,
                     isTranslating = state.isTranslating,
@@ -150,9 +138,7 @@ fun TranslateScreen(
                             Toast.LENGTH_LONG
                         ).show()
                     },
-                    onCloseClick = {
-                        onEvent(TranslateEvent.CloseTranslation)
-                    },
+                    onCloseClick = { onEvent(TranslateEvent.CloseTranslation) },
                     onSpeakerClick = {
                         tts.language = state.toLanguage.toLocale() ?: Locale.ENGLISH
                         tts.speak(
@@ -162,19 +148,14 @@ fun TranslateScreen(
                             null
                         )
                     },
-                    onTextFieldClick = {
-                        onEvent(TranslateEvent.EditTranslation)
-                    },
-                    modifier = Modifier.fillMaxWidth()
+                    onTextFieldClick = { onEvent(TranslateEvent.EditTranslation) },
                 )
             }
 
             item {
                 if (state.history.isNotEmpty()) {
                     Text(
-                        text = stringResource(
-                            id = com.kenshi.kmmtranslator.android.R.string.history
-                        ),
+                        text = stringResource(id = R.string.history),
                         style = MaterialTheme.typography.h2
                     )
                 }
@@ -182,11 +163,9 @@ fun TranslateScreen(
 
             items(state.history) { item ->
                 TranslateHistoryItem(
+                    modifier = Modifier.fillMaxWidth(),
                     item = item,
-                    onClick = {
-                        onEvent(TranslateEvent.SelectHistoryItem(item))
-                    },
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = { onEvent(TranslateEvent.SelectHistoryItem(item)) },
                 )
             }
         }

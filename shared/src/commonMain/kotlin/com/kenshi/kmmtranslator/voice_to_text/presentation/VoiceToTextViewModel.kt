@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class VoiceToTextViewModel(
     private val parser: VoiceToTextParser,
-    coroutineScope: CoroutineScope? = null
+    coroutineScope: CoroutineScope? = null,
 ) {
     private val viewModelScope = coroutineScope ?: CoroutineScope(Dispatchers.Main)
 

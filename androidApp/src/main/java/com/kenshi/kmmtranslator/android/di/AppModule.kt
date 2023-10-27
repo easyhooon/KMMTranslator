@@ -45,6 +45,7 @@ object AppModule {
         return SqlDelightHistoryDataSource(TranslateDatabase(driver))
     }
 
+    // UseCase 도 주입 해주는 방식으로!
     @Provides
     @Singleton
     fun provideTranslateUseCase(

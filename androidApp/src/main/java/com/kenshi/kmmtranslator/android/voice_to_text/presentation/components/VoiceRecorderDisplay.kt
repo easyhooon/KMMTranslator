@@ -23,8 +23,8 @@ import kotlin.random.Random
 
 @Composable
 fun VoiceRecorderDisplay(
+    modifier: Modifier = Modifier,
     powerRatios: List<Float>,
-    modifier: Modifier = Modifier
 ) {
     val primary = MaterialTheme.colors.primary
     Box(

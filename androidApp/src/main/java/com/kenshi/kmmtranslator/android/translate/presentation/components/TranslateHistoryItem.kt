@@ -17,36 +17,36 @@ import com.kenshi.kmmtranslator.translate.presentation.UiHistoryItem
 
 @Composable
 fun TranslateHistoryItem(
+    modifier: Modifier = Modifier,
     item: UiHistoryItem,
     onClick: () -> Unit,
-    modifier: Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .shadow(
                 elevation = 5.dp,
-                shape = RoundedCornerShape(20.dp)
+                shape = RoundedCornerShape(20.dp),
             )
             .clip(RoundedCornerShape(20.dp))
             .gradientSurface()
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SmallLanguageIcon(language = item.fromLanguage)
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = item.fromText,
                 color = LightBlue,
-                style = MaterialTheme.typography.body2
+                style = MaterialTheme.typography.body2,
             )
         }
         Spacer(modifier = Modifier.width(24.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SmallLanguageIcon(language = item.toLanguage)
             Spacer(modifier = Modifier.width(16.dp))
@@ -54,7 +54,7 @@ fun TranslateHistoryItem(
                 text = item.toText,
                 color = MaterialTheme.colors.onSurface,
                 style = MaterialTheme.typography.body1,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
         }
     }

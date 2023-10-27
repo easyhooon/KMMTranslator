@@ -48,7 +48,7 @@ fun TranslateRoot() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Routes.TRANSLATE
+        startDestination = Routes.TRANSLATE,
     ) {
         composable(route = Routes.TRANSLATE) { navBackStackEntry ->
             val viewModel = hiltViewModel<AndroidTranslateViewModel>()

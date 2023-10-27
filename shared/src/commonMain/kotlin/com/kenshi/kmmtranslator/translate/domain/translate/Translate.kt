@@ -8,7 +8,7 @@ import com.kenshi.kmmtranslator.translate.domain.history.HistoryItem
 // UseCase
 class Translate(
     private val client: TranslateClient,
-    private val historyDataSource: HistoryDataSource
+    private val historyDataSource: HistoryDataSource,
 ) {
     suspend fun execute(
         fromLanguage: Language,
@@ -17,7 +17,9 @@ class Translate(
     ): Resource<String> {
         return try {
             val translatedText = client.translate(
-                fromLanguage, fromText, toLanguage
+                fromLanguage = fromLanguage,
+                fromText = fromText,
+                toLanguage = toLanguage,
             )
             historyDataSource.insertHistoryItem(
                 HistoryItem(
@@ -25,7 +27,7 @@ class Translate(
                     fromLanguageCode = fromLanguage.langCode,
                     fromText = fromText,
                     toLanguageCode = toLanguage.langCode,
-                    toText = translatedText
+                    toText = translatedText,
                 )
             )
             Resource.Success(translatedText)

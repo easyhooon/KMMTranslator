@@ -31,9 +31,7 @@ class AndroidVoiceToTextParser(
 
         if (!SpeechRecognizer.isRecognitionAvailable(app)) {
             _state.update {
-                it.copy(
-                    error = app.getString(R.string.error_speech_recognition_unavailable)
-                )
+                it.copy(error = app.getString(R.string.error_speech_recognition_unavailable))
             }
             return
         }
@@ -45,9 +43,7 @@ class AndroidVoiceToTextParser(
         recognizer.setRecognitionListener(this)
         recognizer.startListening(intent)
         _state.update {
-            it.copy(
-                isSpeaking = true
-            )
+            it.copy(isSpeaking = true)
         }
     }
 
@@ -73,9 +69,7 @@ class AndroidVoiceToTextParser(
     override fun onRmsChanged(rmsdB: Float) {
         // 유저의 목소리의 크기의 변화를 알려줌
         _state.update {
-            it.copy(
-                powerRatio = rmsdB * (1f / (12f - (-2f)))
-            )
+            it.copy(powerRatio = rmsdB * (1f / (12f - (-2f))))
         }
     }
 
@@ -97,9 +91,9 @@ class AndroidVoiceToTextParser(
             ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             ?.getOrNull(0)
             ?.let { text ->
-                _state.update { it.copy(
-                    result = text
-                )}
+                _state.update {
+                    it.copy(result = text)
+                }
             }
     }
 

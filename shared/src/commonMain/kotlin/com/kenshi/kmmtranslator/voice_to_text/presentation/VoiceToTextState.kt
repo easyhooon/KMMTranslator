@@ -5,7 +5,7 @@ data class VoiceToTextState(
     val spokenText: String =  "",
     val canRecord: Boolean = false,
     val recordError: String? = null,
-    val displayState: DisplayState? = null
+    val displayState: DisplayState? = null,
 )
 
 enum class DisplayState {

@@ -10,8 +10,8 @@ import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 //TODO UiLanguage 의 존재 이유
 @Composable
 fun SmallLanguageIcon(
+    modifier: Modifier = Modifier,
     language: UiLanguage,
-    modifier: Modifier = Modifier
 ) {
     AsyncImage(
         model = language.drawableRes,

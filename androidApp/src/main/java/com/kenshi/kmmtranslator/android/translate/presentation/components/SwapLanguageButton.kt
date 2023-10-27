@@ -15,18 +15,19 @@ import com.kenshi.kmmtranslator.android.R
 
 @Composable
 fun SwapLanguagesButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier 
 ) {
     IconButton(
         onClick = onClick,
         modifier = modifier
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary)
+            .background(MaterialTheme.colors.primary),
     ) {
-        Icon(imageVector = ImageVector.vectorResource(id = R.drawable.swap_languages),
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.swap_languages),
             contentDescription = stringResource(id = R.string.swap_languages),
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colors.onPrimary,
         )
     }
 }
