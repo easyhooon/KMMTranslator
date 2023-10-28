@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kenshi.kmmtranslator.android.core.theme.LightBlue
+import com.kenshi.kmmtranslator.android.extensions.gradientSurface
 import com.kenshi.kmmtranslator.translate.presentation.UiHistoryItem
 
 @Composable
@@ -29,7 +30,8 @@ fun TranslateHistoryItem(
             )
             .clip(RoundedCornerShape(20.dp))
             .gradientSurface()
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .padding(16.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

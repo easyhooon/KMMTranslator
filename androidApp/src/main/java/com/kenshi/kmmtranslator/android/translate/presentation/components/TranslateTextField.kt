@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.kenshi.kmmtranslator.android.R
 import com.kenshi.kmmtranslator.android.core.theme.LightBlue
+import com.kenshi.kmmtranslator.android.extensions.gradientSurface
 import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
 @Composable

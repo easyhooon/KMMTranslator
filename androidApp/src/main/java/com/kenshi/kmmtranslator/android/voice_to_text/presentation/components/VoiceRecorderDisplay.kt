@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kenshi.kmmtranslator.android.TranslatorTheme
-import com.kenshi.kmmtranslator.android.translate.presentation.components.gradientSurface
+import com.kenshi.kmmtranslator.android.extensions.gradientSurface
 import kotlin.random.Random
 
 @Composable
