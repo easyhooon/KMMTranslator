@@ -39,13 +39,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AndroidTranslateViewModel @Inject constructor(
-    private val translate: TranslateUseCase,
+    private val translateUseCase: TranslateUseCase,
     private val historyDataSource: HistoryDataSource,
 ) : ViewModel() {
 
     private val viewModel by lazy {
         TranslateViewModel(
-            translate = translate,
+            translateUseCase = translateUseCase,
             historyDataSource = historyDataSource,
             coroutineScope = viewModelScope,
         )

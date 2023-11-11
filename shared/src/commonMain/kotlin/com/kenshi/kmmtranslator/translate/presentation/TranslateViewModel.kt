@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 // 두 개의 개별 test suit 도 작성할 필요가 없음
 class TranslateViewModel(
     // UseCase
-    private val translate: TranslateUseCase,
+    private val translateUseCase: TranslateUseCase,
     historyDataSource: HistoryDataSource,
     // iOS 에는 coroutineScope 라는 개념이 실제로 존재하지 않음
     // Android 에선 coroutineScope 로 ViewModelScope 를 전달함
@@ -171,7 +171,7 @@ class TranslateViewModel(
 
         translateJob = viewModelScope.launch {
             _state.update { it.copy(isTranslating = true) }
-            val result = translate.execute(
+            val result = translateUseCase.execute(
                 fromLanguage = state.fromLanguage.language,
                 fromText = state.fromText,
                 toLanguage = state.toLanguage.language,

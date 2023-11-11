@@ -2,6 +2,8 @@ package com.kenshi.kmmtranslator.core.domain.util
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -37,5 +39,15 @@ actual open class CommonFlow<T> actual constructor(
         // disposableHandle은 코루틴 스코프 내에 있으며, 해당 스코프가 취소되거나 완료되면 정의된 작업(리소스 해제 등)을 실행하는 메커니즘을 제공합니다.
         // 이러한 handle은 CoroutineScope 내에서 사용되며, 주로 launch나 async와 같은 코루틴 빌더를 사용하여 코루틴을 시작할 때 얻을 수 있습니다.
         return DisposableHandle { job.cancel() }
+    }
+
+    fun subscribe(
+        onCollect: (T) -> Unit
+    ): DisposableHandle {
+        return subscribe(
+            coroutineScope = GlobalScope,
+            dispatcher = Dispatchers.Main,
+            onCollect = onCollect,
+        )
     }
 }
