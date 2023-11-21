@@ -7,5 +7,6 @@ sealed class VoiceToTextEvent {
         val isPermanentlyDeclined: Boolean,
     ): VoiceToTextEvent()
     data class ToggleRecording(val languageCode: String): VoiceToTextEvent()
+    // Reset 이벤트는 iOS 만 해당
     object Reset: VoiceToTextEvent()
 }

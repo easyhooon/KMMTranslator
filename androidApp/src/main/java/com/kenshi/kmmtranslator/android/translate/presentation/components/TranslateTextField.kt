@@ -29,7 +29,6 @@ import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
 @Composable
 fun TranslateTextField(
-    modifier: Modifier = Modifier,
     fromText: String,
     toText: String?,
     isTranslating: Boolean,
@@ -41,6 +40,7 @@ fun TranslateTextField(
     onCloseClick: () -> Unit,
     onSpeakerClick: () -> Unit,
     onTextFieldClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier

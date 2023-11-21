@@ -15,6 +15,8 @@ class VoiceToTextViewModel(
     private val viewModelScope = coroutineScope ?: CoroutineScope(Dispatchers.Main)
 
     private val _state = MutableStateFlow(VoiceToTextState())
+
+    // 상태를 정의할 때 이렇게 할 수 도 있다.
     val state = _state.combine(parser.state) { state, voiceResult ->
         state.copy(
             spokenText = voiceResult.result,
@@ -35,6 +37,7 @@ class VoiceToTextViewModel(
         )
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), VoiceToTextState())
+        // iOS 에서도 flow 를 수집할 수 있도록
         .toCommonStateFlow()
 
     init {
@@ -42,9 +45,7 @@ class VoiceToTextViewModel(
             while (true) {
                 if (state.value.displayState == DisplayState.SPEAKING) {
                     _state.update {
-                        it.copy(
-                            powerRatios = it.powerRatios + parser.state.value.powerRatio
-                        )
+                        it.copy(powerRatios = it.powerRatios + parser.state.value.powerRatio)
                     }
                 }
                 delay(50L)
@@ -52,10 +53,13 @@ class VoiceToTextViewModel(
         }
     }
 
+    // TODO 언제는 is 가 붙고 언제는 그냥인 이유가 뭘까
     fun onEvent(event: VoiceToTextEvent) {
         when (event) {
             is VoiceToTextEvent.PermissionResult -> {
-                _state.update { it.copy(canRecord = event.isGranted) }
+                _state.update {
+                    it.copy(canRecord = event.isGranted)
+                }
             }
 
             VoiceToTextEvent.Reset -> {
@@ -69,7 +73,9 @@ class VoiceToTextViewModel(
     }
 
     private fun toggleRecording(languageCode: String) {
-        _state.update { it.copy(powerRatios = emptyList()) }
+        _state.update {
+            it.copy(powerRatios = emptyList())
+        }
         parser.cancel()
         if (state.value.displayState == DisplayState.SPEAKING) {
             parser.stopListening()

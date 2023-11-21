@@ -13,8 +13,8 @@ import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
 @Composable
 fun LanguageDisplay(
-    modifier: Modifier = Modifier,
     language: UiLanguage,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,

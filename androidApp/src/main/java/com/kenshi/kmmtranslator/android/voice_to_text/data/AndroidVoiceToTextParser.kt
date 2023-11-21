@@ -11,20 +11,20 @@ import com.kenshi.kmmtranslator.android.R
 import com.kenshi.kmmtranslator.core.domain.util.CommonStateFlow
 import com.kenshi.kmmtranslator.core.domain.util.toCommonStateFlow
 import com.kenshi.kmmtranslator.voice_to_text.domain.VoiceToTextParser
-import com.plcoding.translator_kmm.voice_to_text.domain.VoiceToTextParserState
+import com.kenshi.kmmtranslator.voice_to_text.domain.VoiceToTextParserState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
 // voice to text 를 구현 하는 방법
 class AndroidVoiceToTextParser(
+    // context 가 필요하기 때문에 생성자를 추가
     private val app: Application
 ) : VoiceToTextParser, RecognitionListener {
 
     private val recognizer = SpeechRecognizer.createSpeechRecognizer(app)
 
     private val _state = MutableStateFlow(VoiceToTextParserState())
-    override val state: CommonStateFlow<VoiceToTextParserState>
-        get() = _state.toCommonStateFlow()
+    override val state: CommonStateFlow<VoiceToTextParserState> = _state.toCommonStateFlow()
 
     override fun startListening(languageCode: String) {
         _state.update { VoiceToTextParserState() }
@@ -37,7 +37,10 @@ class AndroidVoiceToTextParser(
         }
 
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
+            )
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageCode)
         }
         recognizer.setRecognitionListener(this)
@@ -57,17 +60,20 @@ class AndroidVoiceToTextParser(
     }
 
     override fun reset() {
+        // 복사할 필요가 없기 때문에
         _state.value = VoiceToTextParserState()
     }
 
     override fun onReadyForSpeech(params: Bundle?) {
-        _state.update { it.copy(error = null) }
+        _state.update {
+            it.copy(error = null)
+        }
     }
 
     override fun onBeginningOfSpeech() = Unit
 
+    // 유저의 목소리의 크기의 변화를 알려줌
     override fun onRmsChanged(rmsdB: Float) {
-        // 유저의 목소리의 크기의 변화를 알려줌
         _state.update {
             it.copy(powerRatio = rmsdB * (1f / (12f - (-2f))))
         }
@@ -76,14 +82,18 @@ class AndroidVoiceToTextParser(
     override fun onBufferReceived(buffer: ByteArray?) = Unit
 
     override fun onEndOfSpeech() {
-        _state.update { it.copy(isSpeaking = false) }
+        _state.update {
+            it.copy(isSpeaking = false)
+        }
     }
 
     override fun onError(code: Int) {
         if (code == ERROR_CLIENT) {
             return
         }
-        _state.update { it.copy(error = "Error: $code") }
+        _state.update {
+            it.copy(error = "Error: $code")
+        }
     }
 
     override fun onResults(result: Bundle?) {

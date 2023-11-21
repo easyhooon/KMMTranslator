@@ -12,5 +12,5 @@ enum class DisplayState {
     WAITING_TO_TALK,
     SPEAKING,
     DISPLAYING_RESULTS,
-    ERROR
+    ERROR,
 }

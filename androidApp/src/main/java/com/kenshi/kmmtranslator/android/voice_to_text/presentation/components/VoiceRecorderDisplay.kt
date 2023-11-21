@@ -19,14 +19,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kenshi.kmmtranslator.android.TranslatorTheme
 import com.kenshi.kmmtranslator.android.extensions.gradientSurface
-import kotlin.random.Random
+import kotlin.math.PI
+import kotlin.math.sin
 
 @Composable
 fun VoiceRecorderDisplay(
-    modifier: Modifier = Modifier,
     powerRatios: List<Float>,
+    modifier: Modifier = Modifier,
 ) {
     val primary = MaterialTheme.colors.primary
+
     Box(
         modifier = modifier
             .shadow(
@@ -39,10 +41,12 @@ fun VoiceRecorderDisplay(
                 horizontal = 32.dp,
                 vertical = 8.dp
             )
+            // 캔버스가 만들어짐
             .drawBehind {
                 val powerRatioWith = 3.dp.toPx()
                 val powerRatioCount = (size.width / (2 * powerRatioWith)).toInt()
 
+                // 경계를 넘어 그려지지 않도록, 경계를 설정
                 clipRect(
                     left = 0f,
                     top = 0f,
@@ -50,10 +54,14 @@ fun VoiceRecorderDisplay(
                     bottom = size.height
                 ) {
                     powerRatios
+                        // 가장 최신값을 취함
                         .takeLast(powerRatioCount)
                         .reversed()
+                        // 원점(0, 0) 이 왼쪽 상단이고 x 값이 증가할 수록 오른쪽, y값이 증가할 수록 아래로 내려감
+                        // 따라서 - (size.height / 2f) * ratio 해준게 최상단
                         .forEachIndexed { i, ratio ->
                             val yTopStart = center.y - (size.height / 2f) * ratio
+                            // 그래프가 같은 위치에 계속 그려지지 않도록 위치를 옮김
                             drawRoundRect(
                                 color = primary,
                                 topLeft = Offset(
@@ -64,7 +72,8 @@ fun VoiceRecorderDisplay(
                                     width = powerRatioWith,
                                     height = (center.y - yTopStart) * 2f
                                 ),
-                                cornerRadius = CornerRadius(100f)
+                                // float 으로 설정하면 퍼센트가 됨
+                                cornerRadius = CornerRadius(100f),
                             )
                         }
                 }
@@ -77,10 +86,11 @@ fun VoiceRecorderDisplay(
 fun VoiceRecorderDisplayPreview() {
     TranslatorTheme {
         VoiceRecorderDisplay(
-            powerRatios = (0..100).map {
-//                val percent = it / 100f
-//                sin(percent * 2 * PI).toFloat()
-                Random.nextFloat()
+            powerRatios = (0..50).map {
+                val percent = it / 100f
+                // 사인파의 주기를 구성
+                sin(percent * 2 * PI).toFloat()
+                // Random.nextFloat()
             },
             modifier = Modifier
                 .fillMaxWidth()

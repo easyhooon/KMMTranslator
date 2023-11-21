@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProgressButton(
-    modifier: Modifier = Modifier,
     text: String,
     isLoading: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier

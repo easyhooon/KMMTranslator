@@ -26,6 +26,8 @@ import com.kenshi.kmmtranslator.translate.presentation.TranslateEvent
 import com.kenshi.kmmtranslator.voice_to_text.presentation.VoiceToTextEvent
 import dagger.hilt.android.AndroidEntryPoint
 
+// 참고) 음성 인식 API 가 음성 인식이 아직 완료되지 않은 상태에서 듣기 중지를 호출하면 에러 발생
+// Error: 5 (클라이언트 에러를 의미)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,16 +54,19 @@ fun TranslateRoot() {
     ) {
         composable(route = Routes.TRANSLATE) { navBackStackEntry ->
             val viewModel = hiltViewModel<AndroidTranslateViewModel>()
+            // collectAsState() 여도 되는 이유? collectAsStateWithLifecycle() 을 안해도 되는 이유
+            // route 역할을 하는 composable 이기 때문에?
             val state by viewModel.state.collectAsState()
 
             val voiceResult by navBackStackEntry
+                // navBackStackEntry 클래스 내에 포함 되어있음
                 .savedStateHandle
                 .getStateFlow<String?>("voiceResult", null)
                 .collectAsState()
 
             LaunchedEffect(voiceResult) {
                 viewModel.onEvent(TranslateEvent.SubmitVoiceResult(voiceResult))
-                // clear
+                // VoiceResult 를 제출한 이후 이를 제거(reset)
                 navBackStackEntry.savedStateHandle["voiceResult"] = null
             }
 
@@ -110,7 +115,7 @@ fun TranslateRoot() {
                         }
                         else -> viewModel.onEvent(event)
                     }
-                }
+                },
             )
         }
     }

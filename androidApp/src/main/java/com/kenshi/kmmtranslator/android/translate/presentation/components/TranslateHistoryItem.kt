@@ -18,9 +18,9 @@ import com.kenshi.kmmtranslator.translate.presentation.UiHistoryItem
 
 @Composable
 fun TranslateHistoryItem(
-    modifier: Modifier = Modifier,
     item: UiHistoryItem,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier

@@ -15,8 +15,8 @@ import com.kenshi.kmmtranslator.android.R
 
 @Composable
 fun SwapLanguagesButton(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onClick,

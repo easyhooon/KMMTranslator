@@ -38,15 +38,17 @@ fun VoiceToTextScreen(
     languageCode: String,
     onResult: (String) -> Unit,
     onEvent: (VoiceToTextEvent) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    // 권한 체크
+    // 권한 요청을 위한 코드
     val recordAudioLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             onEvent(
                 VoiceToTextEvent.PermissionResult(
                     isGranted = isGranted,
+                    // 한번 권한 요청을 거부하고 또 다시 거부한 경우
                     isPermanentlyDeclined = !isGranted && !(context as ComponentActivity)
                         .shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)
                 )
@@ -58,11 +60,13 @@ fun VoiceToTextScreen(
     }
 
     Scaffold(
+        modifier = modifier,
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 FloatingActionButton(
-                    modifier = Modifier.size(75.dp),
                     onClick = {
                         if (state.displayState != DisplayState.DISPLAYING_RESULTS) {
                             onEvent(VoiceToTextEvent.ToggleRecording(languageCode))
@@ -70,6 +74,7 @@ fun VoiceToTextScreen(
                             onResult(state.spokenText)
                         }
                     },
+                    modifier = Modifier.size(75.dp),
                     backgroundColor = MaterialTheme.colors.primary,
                     contentColor = MaterialTheme.colors.onPrimary,
                 ) {
@@ -79,7 +84,7 @@ fun VoiceToTextScreen(
                                 Icon(
                                     imageVector = Icons.Rounded.Close,
                                     contentDescription = stringResource(id = R.string.stop_recording),
-                                    modifier = Modifier.size(50.dp)
+                                    modifier = Modifier.size(50.dp),
                                 )
                             }
 
@@ -87,22 +92,26 @@ fun VoiceToTextScreen(
                                 Icon(
                                     imageVector = Icons.Rounded.Check,
                                     contentDescription = stringResource(id = R.string.apply),
-                                    modifier = Modifier.size(50.dp)
+                                    modifier = Modifier.size(50.dp),
                                 )
                             }
 
                             else -> {
                                 Icon(
-                                    modifier = Modifier.size(50.dp),
                                     imageVector = ImageVector.vectorResource(id = R.drawable.mic),
                                     contentDescription = stringResource(id = R.string.record_audio),
+                                    modifier = Modifier.size(50.dp),
                                 )
                             }
                         }
                     }
                 }
                 if (state.displayState == DisplayState.DISPLAYING_RESULTS) {
-                    IconButton(onClick = { onEvent(VoiceToTextEvent.ToggleRecording(languageCode)) }) {
+                    IconButton(
+                        onClick = {
+                            onEvent(VoiceToTextEvent.ToggleRecording(languageCode))
+                        },
+                    ) {
                         Icon(
                             imageVector = Icons.Rounded.Refresh,
                             contentDescription = stringResource(id = R.string.record_again),
@@ -128,8 +137,8 @@ fun VoiceToTextScreen(
                 }
                 if (state.displayState == DisplayState.SPEAKING) {
                     Text(
-                        modifier = Modifier.align(Alignment.Center),
                         text = stringResource(id = R.string.listening),
+                        modifier = Modifier.align(Alignment.Center),
                         color = LightBlue,
                     )
                 }

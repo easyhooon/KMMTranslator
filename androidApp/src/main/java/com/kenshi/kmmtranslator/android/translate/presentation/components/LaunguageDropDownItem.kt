@@ -15,9 +15,9 @@ import com.kenshi.kmmtranslator.core.presentation.UiLanguage
 
 @Composable
 fun LanguageDropDownItem(
-    modifier: Modifier = Modifier,
     language: UiLanguage,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     DropdownMenuItem(
         onClick = onClick,
