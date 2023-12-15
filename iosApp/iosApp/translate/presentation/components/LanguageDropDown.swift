@@ -9,7 +9,7 @@
 import SwiftUI
 import shared
 
-struct LauguageDropDown: View {
+struct LanguageDropDown: View {
     var language: UiLanguage
     var isOpen: Bool
     var selectLanguage: (UiLanguage) -> Void
@@ -39,7 +39,7 @@ struct LauguageDropDown: View {
 }
 
 #Preview {
-    LauguageDropDown(
+    LanguageDropDown(
         language: UiLanguage(language: .german, imageName: "german"),
         isOpen: true,
         selectLanguage: { language in }

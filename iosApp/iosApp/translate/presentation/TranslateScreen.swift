@@ -13,21 +13,20 @@ struct TranslateScreen: View {
     private var historyDataSource: HistoryDataSource
     private var translateUseCase: TranslateUseCase
     @ObservedObject var viewModel: IOSTranslateViewModel
+    private let parser: any VoiceToTextParser
     
-    init(historyDataSource: HistoryDataSource, translateUseCase: TranslateUseCase) {
+    init(historyDataSource: HistoryDataSource, translateUseCase: TranslateUseCase, parser: VoiceToTextParser) {
         self.historyDataSource = historyDataSource
         self.translateUseCase = translateUseCase
-        self.viewModel = IOSTranslateViewModel(
-            historyDataSource: historyDataSource,
-            translateUseCase: translateUseCase
-        )
+        self.parser = parser
+        self.viewModel = IOSTranslateViewModel(historyDataSource: historyDataSource, translateUseCase: translateUseCase)
     }
     
     var body: some View {
         ZStack {
             List {
                 HStack(alignment: .center) {
-                    LauguageDropDown(
+                    LanguageDropDown(
                         language: viewModel.state.fromLanguage,
                         isOpen: viewModel.state.isChoosingFromLanguage,
                         selectLanguage: { language in
@@ -39,7 +38,7 @@ struct TranslateScreen: View {
                         viewModel.onEvent(event: TranslateEvent.SwapLanguages())
                     })
                     Spacer()
-                    LauguageDropDown(
+                    LanguageDropDown(
                         language: viewModel.state.toLanguage,
                         isOpen: viewModel.state.isChoosingToLanguage,
                         selectLanguage: { language in
@@ -86,13 +85,22 @@ struct TranslateScreen: View {
             
             VStack {
                 Spacer()
-                NavigationLink(destination: Text("Voice-to-text screen")) {
+                NavigationLink(
+                    destination: VoiceToTextScreen(
+                        onResult: { spokenText in
+                            viewModel.onEvent(event: TranslateEvent.SubmitVoiceResult(result: spokenText))
+                        },
+                        parser: parser,
+                        languageCode: viewModel.state.fromLanguage.language.langCode
+                    )
+                ) {
                     ZStack {
                         Circle()
                             .foregroundColor(.primaryColor)
                             .padding()
                         Image(uiImage: UIImage(named: "mic")!)
                             .foregroundColor(.onPrimary)
+                            .accessibilityIdentifier("Record audio")
                     }
                     .frame(maxWidth: 100, maxHeight: 100)
                 }

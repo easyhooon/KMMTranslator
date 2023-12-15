@@ -2,8 +2,6 @@ package com.kenshi.kmmtranslator.presentation
 
 import android.Manifest
 import android.content.Context
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -28,7 +26,6 @@ import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @HiltAndroidTest
 // AppModule과 VoiceToTextModule 모듈을 제거하여 테스트하는 것을 의미
 // Hilt Testing 에서의 Fake 객체를 주입하기 위해서

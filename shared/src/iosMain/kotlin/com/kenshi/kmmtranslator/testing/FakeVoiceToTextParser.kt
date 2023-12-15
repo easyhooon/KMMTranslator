@@ -1,4 +1,4 @@
-package com.kenshi.kmmtranslator.voice_to_text.data
+package com.kenshi.kmmtranslator.testing
 
 import com.kenshi.kmmtranslator.core.domain.util.CommonStateFlow
 import com.kenshi.kmmtranslator.core.domain.util.toCommonStateFlow

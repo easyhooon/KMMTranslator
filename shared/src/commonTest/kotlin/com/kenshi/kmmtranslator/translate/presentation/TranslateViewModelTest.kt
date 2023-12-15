@@ -26,12 +26,12 @@ class TranslateViewModelTest {
     fun setUp() {
         client = FakeTranslateClient()
         dataSource = FakeHistoryDataSource()
-        val translate = TranslateUseCase(
+        val translateUseCase = TranslateUseCase(
             client = client,
             historyDataSource = dataSource
         )
         viewModel = TranslateViewModel(
-            translate = translate,
+            translateUseCase = translateUseCase,
             historyDataSource = dataSource,
             coroutineScope = CoroutineScope(Dispatchers.Default)
         )
@@ -75,6 +75,7 @@ class TranslateViewModelTest {
 
             viewModel.onEvent(TranslateEvent.Translate)
 
+            // 흥미로운 부분
             val loadingState = awaitItem()
             assertThat(loadingState.isTranslating).isTrue()
 

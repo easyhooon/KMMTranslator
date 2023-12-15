@@ -3,7 +3,6 @@ package com.kenshi.kmmtranslator
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
-import com.apple.eawt.Application
 import dagger.hilt.android.testing.HiltTestApplication
 
 class TestHiltRunner: AndroidJUnitRunner() {

@@ -10,10 +10,10 @@ import Foundation
 import shared
 
 extension TranslateScreen {
-    @MainActor class IOSTranslateViewModel: ObservableObject {
+        @MainActor class IOSTranslateViewModel: ObservableObject {
         private var historyDataSource: HistoryDataSource
         private var translateUseCase: TranslateUseCase
-        
+            
         private let viewModel: TranslateViewModel
         
         @Published var state: TranslateState = TranslateState(

@@ -12,6 +12,7 @@ import shared
 struct LanguageDropDownItem: View {
     var language: UiLanguage
     var onClick: () -> Void
+    
     var body: some View {
         Button(action: onClick) {
             HStack {

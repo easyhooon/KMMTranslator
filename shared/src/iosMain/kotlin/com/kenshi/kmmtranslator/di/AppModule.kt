@@ -8,10 +8,20 @@ import com.kenshi.kmmtranslator.translate.data.translate.KtorTranslateClient
 import com.kenshi.kmmtranslator.translate.domain.history.HistoryDataSource
 import com.kenshi.kmmtranslator.translate.domain.translate.TranslateClient
 import com.kenshi.kmmtranslator.translate.domain.translate.TranslateUseCase
+import com.kenshi.kmmtranslator.voice_to_text.domain.VoiceToTextParser
 
-class AppModule {
+interface AppModule  {
+    val historyDataSource: HistoryDataSource
+    val client: TranslateClient
+    val translateUseCase: TranslateUseCase
+    val voiceParser: VoiceToTextParser
+}
 
-    val historyDataSource: HistoryDataSource by lazy {
+class AppModuleImpl(
+    parser: VoiceToTextParser
+): AppModule {
+
+    override val historyDataSource: HistoryDataSource by lazy {
         SqlDelightHistoryDataSource(
             TranslateDatabase(
                 DatabaseDriverFactory().create()
@@ -19,13 +29,15 @@ class AppModule {
         )
     }
 
-    private val translateClient: TranslateClient by lazy {
+    override val client: TranslateClient by lazy {
         KtorTranslateClient(
             HttpClientFactory().create()
         )
     }
 
-    val translateUseCase: TranslateUseCase by lazy {
-        TranslateUseCase(translateClient, historyDataSource)
+    override val translateUseCase: TranslateUseCase by lazy {
+        TranslateUseCase(client, historyDataSource)
     }
+
+    override val voiceParser = parser
 }
